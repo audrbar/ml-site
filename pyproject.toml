@@ -1,0 +1,10 @@
+[project]
+name = "ml-site"
+version = "0.1.0"
+description = "Website for testing chatbots"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=1.66.3",
+    "streamlit>=1.43.2",
+]
