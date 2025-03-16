@@ -172,3 +172,21 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Data
+docs/
+etc/
+
+.idea
+.idea/
+.DS_Store
+DS_Store/
+data/
+docs/
+logs/
+
+vscode/
+.vscode/
+*.code-workspace
+.streamlit/secrets.toml
+uv.lock
