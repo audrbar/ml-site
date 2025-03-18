@@ -1,13 +1,11 @@
 import streamlit as st
-from PyPDF2 import PdfReader
-from langchain.text_splitter import CharacterTextSplitter
-from langchain_community.embeddings import OpenAIEmbeddings
-from langchain_community.vectorstores import FAISS
-from langchain.chains.question_answering import load_qa_chain
-from langchain_community.llms import OpenAI
-from langchain_community.callbacks.manager import get_openai_callback
-
-
+from PyPDF2 import PdfReader # type: ignore
+from langchain.text_splitter import CharacterTextSplitter # type: ignore
+from langchain_community.embeddings import OpenAIEmbeddings # type: ignore
+from langchain_community.vectorstores import FAISS # type: ignore
+from langchain.chains.question_answering import load_qa_chain # type: ignore
+from langchain_community.llms import OpenAI # type: ignore
+from langchain_community.callbacks.manager import get_openai_callback # type: ignore
 
 def main():
     hide_st_style = """
