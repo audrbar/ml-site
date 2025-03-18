@@ -1,5 +1,5 @@
 import streamlit as st
-from openai  import OpenAI
+from openai import OpenAI
 from Home import footer_section
 
 # Ensure API key is set correctly
