@@ -6,11 +6,18 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "datetime>=5.5",
+    "google-genai>=1.7.0",
     "langchain>=0.3.20",
     "langchain-community>=0.3.19",
-    "openai==0.28",
+    "langchain-core==0.3.47",
+    "ollama>=0.4.7",
+    "openai==1.67",
+    "protobuf==5.29.4",
     "pypdf2>=3.0.1",
     "requests>=2.32.3",
+    "rich>=13.9.4",
+    "setuptools==77.0.3",
     "streamlit>=1.43.2",
     "streamlit-lottie>=0.0.5",
+    "types-requests>=2.32.0.20250306",
 ]

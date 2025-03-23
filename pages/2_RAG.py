@@ -8,14 +8,6 @@ from langchain_community.llms import OpenAI # type: ignore
 from langchain_community.callbacks.manager import get_openai_callback # type: ignore
 
 def main():
-    hide_st_style = """
-                <style>
-                    #MainMenu {visibility: hidden;}
-                    footer {visibility: hidden;}
-                    header {visibility: hidden;}
-                </style>
-                """
-    st.markdown(hide_st_style, unsafe_allow_html=True)
     st.title("Ask your PDF 💬")
 
     # upload file
@@ -49,7 +41,6 @@ def main():
         with st.expander("Click for knowledge_base"):
             st.write(knowledge_base)
 
-        # show user input
         # user_question = st.text_input("Ask a question about your PDF:")
         user_question = st.chat_input("Ask a question about your PDF...")
         if user_question:
@@ -62,7 +53,6 @@ def main():
             st.write(response)
             with st.expander("Click for service details"):
                 st.write(cb)
-
 
 if __name__ == '__main__':
     main()

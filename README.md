@@ -14,8 +14,8 @@ This is a **web-based platform** for testing AI chatbots, built with **Streamlit
 ### Clone the repository:
 
 ```sh
-git clone https://github.com/yourusername/chatbot-testing.git
-cd chatbot-testing
+git clone https://github.com/audrbar/ml-site
+cd ml-site
 ```
 
 ### Install dependencies:

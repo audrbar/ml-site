@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 from datetime import datetime
-import streamlit_lottie as lto
+import streamlit_lottie as lto # type: ignore
 
 st.set_page_config(
     page_title="Chatbot App",
