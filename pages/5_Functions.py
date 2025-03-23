@@ -11,15 +11,14 @@ def get_weather(latitude, longitude):
     data = response.json()
     return data['current']['temperature_2m']
 
-def write_chat_to_file(filename, messages):
-    with open(filename, 'w') as f:
-        json.dump(messages, f, indent=4)
-
 def write_to_file(content: str, filename: str = "data/chat_history.txt"):
         with open(filename, 'w') as file:
             file.write(content)
         return os.path.abspath(filename)
 
+client = OpenAI(api_key=st.secrets["openai_api_key"])
+
+messages = []
 
 # Convert message objects to serializable dictionaries
 def serialize_message(message):
@@ -35,20 +34,16 @@ def serialize_message(message):
     else:
         raise TypeError(f"Object of type {type(message).__name__} is not JSON serializable")
 
-with st.container():
-    st.title(":seedling: Function calling")
-    st.subheader("Enable models to fetch data and take other actions.")
-    st.write("Function calling provides a powerful and flexible way for OpenAI models to interface with\
-        your code or external services.")
-    st.link_button("More information...", "https://platform.openai.com/docs/guides/function-calling?api-mode=chat&example=get-weather")
-    st.divider()
+st.title(":seedling: Function calling")
+st.subheader("Enable models to fetch data and take other actions.")
+st.write("Function calling provides a powerful and flexible way for OpenAI models to interface with\
+    your code or external services.")
+st.link_button("More information...", "https://platform.openai.com/docs/guides/function-calling?api-mode=chat&example=get-weather")
+st.divider()
 
-with st.container():
-    your_city = st.text_input("Choose your city and get a wether data:")
-    st.write("Your city is", your_city)
+your_city = st.chat_input("Choose your city and get a wether data:")
 
 if your_city:
-    client = OpenAI(api_key=st.secrets["openai_api_key"])
     tools = [{
         "type": "function",
         "function": {
@@ -134,7 +129,7 @@ if your_city:
         tools=tools, # type: ignore
     )
 
-    print(completion_3.choices[0].message)
+    st.write(completion_3.choices[0].message)
 
     # Execute the tool call if it's requesting to write to a file
     if completion_3.choices[0].message.tool_calls:
