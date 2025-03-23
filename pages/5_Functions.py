@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import json
 from rich import print
@@ -13,6 +14,12 @@ def get_weather(latitude, longitude):
 def write_chat_to_file(filename, messages):
     with open(filename, 'w') as f:
         json.dump(messages, f, indent=4)
+
+def write_to_file(content: str, filename: str = "data/chat_history.txt"):
+        with open(filename, 'w') as file:
+            file.write(content)
+        return os.path.abspath(filename)
+
 
 # Convert message objects to serializable dictionaries
 def serialize_message(message):
@@ -58,9 +65,24 @@ if your_city:
             },
             "strict": True
         }
+    }, {
+        "type": "function",
+        "function": {
+            "name": "write_to_file",
+            "description": "Write content to a file and return the absolute path.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "content": {"type": "string"}
+                },
+                "required": ["content"],
+                "additionalProperties": False
+            },
+            "strict": True
+        }
     }]
 
-    messages = [{"role": "user", "content": "What's the weather like in {your_city} today?"}]
+    messages = [{"role": "user", "content": f"What's the weather like in {your_city} today?"}]
 
     completion = client.chat.completions.create(
         model="gpt-4o",
@@ -95,10 +117,32 @@ if your_city:
 
     st.write(f"Completion 2: {completion_2.choices[0].message.content}")
 
-    # Serialize messages before writing to file
-    serializable_messages = [serialize_message(msg) for msg in messages]
+    # Add the model's response to the messages
+    messages.append(completion_2.choices[0].message) # type: ignore
 
-    # Example usage
-    write_chat_to_file("data/chat_history.json", serializable_messages)
+    # ------------------------------------------------------------
+
+    # Ask to write the conversation to a file
+    messages.append({
+        "role": "user",
+        "content": "Please write this conversation to a file."
+    })
+
+    completion_3 = client.chat.completions.create(
+        model="gpt-4o",
+        messages=messages, # type: ignore
+        tools=tools, # type: ignore
+    )
+
+    print(completion_3.choices[0].message)
+
+    # Execute the tool call if it's requesting to write to a file
+    if completion_3.choices[0].message.tool_calls:
+        tool_call = completion_3.choices[0].message.tool_calls[0]
+        args = json.loads(tool_call.function.arguments)
+
+        if tool_call.function.name == "write_to_file":
+            file_path = write_to_file(args["content"])
+            print(f"Conversation written to: {file_path}")
 
 footer_section()
