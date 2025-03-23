@@ -1,19 +1,9 @@
-# Create a simple Streamlit chatbot which uses Python Google google.genai library.
-
 import streamlit as st
-import google.generativeai as genai
-import os
-
-# Set your API key
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-if not GOOGLE_API_KEY:
-    st.error("Please set the GOOGLE_API_KEY environment variable.")
-    st.stop()
-
-genai.configure(api_key=GOOGLE_API_KEY)
+from google import genai
+from google.genai import types
 
 # Load Gemini model
-model = genai.GenerativeModel("gemini-pro")
+client = genai.Client(api_key=st.secrets["google_api_key"])
 
 # Session state to hold chat history
 if "chat_history" not in st.session_state:
@@ -21,6 +11,7 @@ if "chat_history" not in st.session_state:
 
 # Title
 st.title("💬 Gemini Chatbot")
+st.divider()
 
 # Chat display
 for message in st.session_state.chat_history:
@@ -35,11 +26,25 @@ if prompt := st.chat_input("Ask me anything..."):
 
     # Get response from Gemini
     try:
-        response = model.generate_content(prompt)
-        reply = response.text
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction='you are a story teller for kids under 5 years old',
+                max_output_tokens= 400,
+                top_k= 2,
+                top_p= 0.5,
+                temperature= 0.5,
+                response_mime_type= 'application/json',
+                stop_sequences= ['\n'],
+                seed=42,
+            ),
+
+        )
+        response = response.text
     except Exception as e:
-        reply = f"⚠️ Error: {str(e)}"
+        response = f"Error: {str(e)}"
 
     # Display response
-    st.chat_message("assistant").markdown(reply)
-    st.session_state.chat_history.append({"role": "assistant", "text": reply})
+    st.chat_message("assistant").markdown(response)
+    st.session_state.chat_history.append({"role": "assistant", "text": response})
