@@ -29,17 +29,16 @@ if prompt := st.chat_input("Ask me anything..."):
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             contents=prompt,
-            config=types.GenerateContentConfig(
-                system_instruction='you are a story teller for kids under 5 years old',
-                max_output_tokens= 400,
-                top_k= 2,
-                top_p= 0.5,
-                temperature= 0.5,
-                response_mime_type= 'application/json',
-                stop_sequences= ['\n'],
-                seed=42,
-            ),
-
+            # config=types.GenerateContentConfig(
+            #     system_instruction='you are a story teller for kids under 5 years old',
+            #     max_output_tokens= 400,
+            #     top_k= 2,
+            #     top_p= 0.5,
+            #     temperature= 0.5,
+            #     response_mime_type= 'application/json',
+            #     stop_sequences= ['\n'],
+            #     seed=42,
+            # ),
         )
         response = response.text
     except Exception as e:
